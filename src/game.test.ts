@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createGame, makeMove, getWinner, isDraw } from './game';
+import { createGame, makeMove, getWinner, getWinningLine, isDraw } from './game';
 
 describe('createGame', () => {
   it('starts with an empty 3x3 board and X to move', () => {
@@ -71,6 +71,30 @@ describe('getWinner', () => {
       null, null, null,
     ];
     expect(getWinner(board)).toBe('O');
+  });
+});
+
+describe('getWinningLine', () => {
+  it('returns null when there is no winner', () => {
+    expect(getWinningLine(createGame().board)).toBeNull();
+  });
+
+  it('returns the indices of the winning row', () => {
+    const board: Array<'X' | 'O' | null> = [
+      'X', 'X', 'X',
+      'O', 'O', null,
+      null, null, null,
+    ];
+    expect(getWinningLine(board)).toEqual([0, 1, 2]);
+  });
+
+  it('returns the indices of the winning diagonal', () => {
+    const board: Array<'X' | 'O' | null> = [
+      'O', 'X', 'X',
+      'X', 'O', null,
+      null, null, 'O',
+    ];
+    expect(getWinningLine(board)).toEqual([0, 4, 8]);
   });
 });
 

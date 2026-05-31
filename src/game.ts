@@ -30,6 +30,15 @@ export function getWinner(board: Board): Player | null {
   return null;
 }
 
+export function getWinningLine(board: Board): readonly [number, number, number] | null {
+  for (const line of WIN_LINES) {
+    const [a, b, c] = line;
+    const v = board[a];
+    if (v && v === board[b] && v === board[c]) return line;
+  }
+  return null;
+}
+
 export function isDraw(board: Board): boolean {
   return getWinner(board) === null && board.every((c) => c !== null);
 }

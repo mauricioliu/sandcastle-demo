@@ -1,6 +1,7 @@
 export type Cell = 'X' | 'O' | null;
 export type Player = 'X' | 'O';
 export type Board = Cell[];
+export type WinningLine = readonly [number, number, number];
 
 export interface GameState {
   board: Board;
@@ -8,7 +9,7 @@ export interface GameState {
   winner: Player | null;
 }
 
-const WIN_LINES: ReadonlyArray<readonly [number, number, number]> = [
+const WIN_LINES: readonly WinningLine[] = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8],
   [0, 3, 6], [1, 4, 7], [2, 5, 8],
   [0, 4, 8], [2, 4, 6],
@@ -30,7 +31,7 @@ export function getWinner(board: Board): Player | null {
   return null;
 }
 
-export function getWinningLine(board: Board): readonly [number, number, number] | null {
+export function getWinningLine(board: Board): WinningLine | null {
   for (const line of WIN_LINES) {
     const [a, b, c] = line;
     const v = board[a];

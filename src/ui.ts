@@ -9,12 +9,18 @@ export function mountGame(
   createGame: CreateGame,
   makeMove: MakeMove,
   isDraw: IsDraw,
-): { render: () => void } {
+): void {
   let state = createGame();
 
   const statusEl = doc.querySelector<HTMLElement>('[data-testid="status"]');
   const cells = Array.from(doc.querySelectorAll<HTMLButtonElement>('.cell'));
   const resetBtn = doc.querySelector<HTMLButtonElement>('[data-testid="reset"]');
+
+  function statusText(): string {
+    if (state.winner) return `${state.winner} wins!`;
+    if (isDraw(state.board)) return "It's a draw";
+    return `${state.currentPlayer}'s turn`;
+  }
 
   function render(): void {
     cells.forEach((cell, i) => {
@@ -22,15 +28,7 @@ export function mountGame(
       cell.textContent = value ?? '';
       cell.disabled = value !== null || state.winner !== null;
     });
-    if (statusEl) {
-      if (state.winner) {
-        statusEl.textContent = `${state.winner} wins!`;
-      } else if (isDraw(state.board)) {
-        statusEl.textContent = "It's a draw";
-      } else {
-        statusEl.textContent = `${state.currentPlayer}'s turn`;
-      }
-    }
+    if (statusEl) statusEl.textContent = statusText();
   }
 
   cells.forEach((cell) => {
@@ -47,5 +45,4 @@ export function mountGame(
   });
 
   render();
-  return { render };
 }

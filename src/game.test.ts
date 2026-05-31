@@ -85,7 +85,6 @@ describe('isDraw', () => {
       'X', 'O', 'O',
       'O', 'X', 'X',
     ];
-    expect(isDraw(board)).toBe(false === !!getWinner(board));
     expect(getWinner(board)).toBeNull();
     expect(isDraw(board)).toBe(true);
   });
